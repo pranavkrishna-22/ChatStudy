@@ -73,6 +73,61 @@ Client-server chat applications are versatile tools that facilitate real-time co
 
 Client-server chat applications are foundational to real-time communication over networks. They incorporate principles of socket programming, communication protocols, and security mechanisms to provide a seamless user experience. Understanding the basics of client-server chat applications is essential for developers involved in networked application development, as they form the backbone of various collaborative communication systems. As technology evolves, chat applications continue to adapt, incorporating new features and technologies to enhance user interaction and connectivity.
 
+## client:
+```
+import socket
+
+HOST = '127.0.0.1'  # Server's IP address
+PORT = 12345        # Server's port
+
+# Create socket
+client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+client_socket.connect((HOST, PORT))
+print("Connected to server. Type 'exit' to quit.")
+
+while True:
+    message = input("Client: ")
+    client_socket.send(message.encode())
+    if message.lower() == 'exit':
+        break
+    data = client_socket.recv(1024).decode()
+    print(f"Server: {data}")
+
+client_socket.close()
+```
+## server:
+```
+import socket
+
+# Server configuration
+HOST = '127.0.0.1'  # Localhost
+PORT = 12345        # Port to listen on
+
+# Create socket
+server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server_socket.bind((HOST, PORT))
+server_socket.listen(1)
+print(f"Server listening on {HOST}:{PORT}")
+
+conn, addr = server_socket.accept()
+print(f"Connected by {addr}")
+
+while True:
+    data = conn.recv(1024).decode()
+    if not data or data.lower() == 'exit':
+        print("Client disconnected.")
+        break
+    print(f"Client: {data}")
+    message = input("Server: ")
+    conn.send(message.encode())
+
+conn.close()
+server_socket.close()
+```
+## output:
+
+<img width="1915" height="822" alt="image" src="https://github.com/user-attachments/assets/615ddc4a-07a8-4c7f-b3c1-0b94406039a0" />
+
 
 ## Result:
 
